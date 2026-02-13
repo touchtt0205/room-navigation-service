@@ -3,10 +3,13 @@ package com.app.room_navigation_service.service;
 import com.app.room_navigation_service.DTO.RoomDTO;
 import com.app.room_navigation_service.entity.Building;
 import com.app.room_navigation_service.entity.Room;
+import com.app.room_navigation_service.entity.Route;
+import com.app.room_navigation_service.entity.RouteStep;
 import com.app.room_navigation_service.repository.RoomRepository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,18 +30,32 @@ public class RoomService {
         RoomDTO dto = new RoomDTO();
         Room w_room = roomRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Room not found with id " + id));
+
         dto.setId(w_room.getId());
         dto.setName(w_room.getName());
         dto.setFloor(w_room.getFloor());
-        Building w_building = w_room.getBuilding();
 
+        if (w_room.getRoutes() != null && !w_room.getRoutes().isEmpty()) {
+            Route route = w_room.getRoutes().get(0);
+            dto.setRouteId(route.getId());
+
+            route.getRouteSteps().stream()
+                    .max(Comparator.comparing(RouteStep::getSeqOrder))
+                    .ifPresent(lastRouteStep -> {
+                        if (lastRouteStep.getStep() != null) {
+                            dto.setRoom_image_url(lastRouteStep.getStep().getImageUrl());
+                        }
+                    });
+        }
+
+        Building w_building = w_room.getBuilding();
         if (w_building != null) {
-            String buildingName = w_building.getName();
-            dto.setBuilding(buildingName);
+            dto.setBuilding(w_building.getName());
             if (w_building.getFaculty() != null) {
                 dto.setFaculty(w_building.getFaculty().getName());
             }
         }
+
         return dto;
     }
 
