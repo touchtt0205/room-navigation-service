@@ -23,7 +23,11 @@ public class Step {
     private String description;
 
     private String type;
+
+    @Column(name = "image_url", columnDefinition = "text")
     private String imageUrl;
+
+    @Column(name = "icon_url", columnDefinition = "text")
     private String iconUrl;
     private Float overlayX;
     private Float overlayY;

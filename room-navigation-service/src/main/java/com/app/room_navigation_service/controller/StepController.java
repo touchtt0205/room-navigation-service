@@ -92,4 +92,18 @@ public class StepController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @PostMapping("/{id}/upload-images")
+    public ResponseEntity<Step> uploadStepImages(
+            @PathVariable Integer id,
+            @RequestParam(value = "image", required = false) MultipartFile image,
+            @RequestParam(value = "icon", required = false) MultipartFile icon) {
+
+        try {
+            Step updatedStep = stepService.updateStepImages(id, image, icon);
+            return ResponseEntity.ok(updatedStep);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
 }

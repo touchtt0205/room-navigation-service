@@ -14,4 +14,6 @@ public class RoomDTO {
     private String building;
     private Integer floor;
     private String faculty;
+    private Integer routeId;
+    private String room_image_url;
 }

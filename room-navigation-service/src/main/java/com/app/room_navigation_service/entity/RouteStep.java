@@ -24,5 +24,6 @@ public class RouteStep {
     @JoinColumn(name = "step_id")
     private Step step;
 
+    @Column(name = "seq_order")
     private Integer seqOrder;
 }
