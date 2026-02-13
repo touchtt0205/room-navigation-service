@@ -1,28 +1,5 @@
-.idea/material_theme_project_new.xml
-target/classes/com/app/room_navigation_service/RoomNavigationServiceApplication.class
-target/classes/com/app/room_navigation_service/config/MinioConfig.class
-target/classes/com/app/room_navigation_service/config/SwaggerConfig.class
-target/classes/com/app/room_navigation_service/controller/BuildingController.class
-target/classes/com/app/room_navigation_service/controller/FacultyController.class
-target/classes/com/app/room_navigation_service/controller/RoomController.class
-target/classes/com/app/room_navigation_service/controller/RouteController.class
-target/classes/com/app/room_navigation_service/controller/StepController.class
-target/classes/com/app/room_navigation_service/DTO/RoomDTO.class
-target/classes/com/app/room_navigation_service/DTO/StepDTO.class
-target/classes/com/app/room_navigation_service/entity/Building.class
-target/classes/com/app/room_navigation_service/entity/Faculty.class
-target/classes/com/app/room_navigation_service/entity/Room.class
-target/classes/com/app/room_navigation_service/entity/Route.class
-target/classes/com/app/room_navigation_service/entity/RouteStep.class
-target/classes/com/app/room_navigation_service/entity/Step.class
-target/classes/com/app/room_navigation_service/repository/BuildingRepository.class
-target/classes/com/app/room_navigation_service/repository/FacultyRepository.class
-target/classes/com/app/room_navigation_service/repository/RoomRepository.class
-target/classes/com/app/room_navigation_service/repository/RouteStepRepository.class
-target/classes/com/app/room_navigation_service/repository/StepRepository.class
-target/classes/com/app/room_navigation_service/service/BuildingService.class
-target/classes/com/app/room_navigation_service/service/FacultyService.class
-target/classes/com/app/room_navigation_service/service/RoomService.class
-target/classes/com/app/room_navigation_service/service/RouteStepService.class
-target/classes/com/app/room_navigation_service/service/StepService.class
-target/classes/com/app/room_navigation_service/service/StorageService.class
+# ### IntelliJ IDEA ###
+.idea/
+
+# ### Maven Build ###
+target/
