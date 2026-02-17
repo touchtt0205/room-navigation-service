@@ -1,8 +1,6 @@
 package com.app.room_navigation_service.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,24 +12,22 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "buildings")
-public class Building {
+@Table(name = "floors")
+public class Floor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String name;
-    private Integer totalFloor;
-    private Double latitude;
-    private Double longitude;
+
+    private Integer roomCount;
 
     @ManyToOne
-    @JoinColumn(name = "faculty_id")
+    @JoinColumn(name = "building_id", nullable = false)
     @JsonBackReference
-    private Faculty faculty;
+    private Building building;
 
-//    @OneToMany(mappedBy = "building", cascade = CascadeType.ALL)
-//    private List<Room> rooms;
+    @OneToMany(mappedBy = "floor", cascade = CascadeType.ALL)
+    private List<Room> rooms;
 }
-

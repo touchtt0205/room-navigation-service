@@ -27,12 +27,26 @@ public class BuildingController {
     }
 
     @PostMapping
-    public Building createBuilding(@RequestBody BuildingDTO building) {
-        Building w_building = new Building();
+    public BuildingDTO createBuilding(@RequestBody BuildingDTO building) {
+        BuildingDTO w_building = new BuildingDTO();
         w_building.setName(building.getName());
         w_building.setTotalFloor(building.getTotalFloor());
         w_building.setLongitude(building.getLongitude());
         w_building.setLatitude(building.getLatitude());
+        w_building.setFacultyId(building.getFacultyId());
         return buildingService.createBuilding(w_building);
+    }
+
+    @PutMapping("/{id}")
+    public BuildingDTO update(
+            @PathVariable Integer id,
+            @RequestBody BuildingDTO dto
+    ) {
+        return buildingService.update(id, dto);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Integer id) {
+        buildingService.delete(id);
     }
 }
