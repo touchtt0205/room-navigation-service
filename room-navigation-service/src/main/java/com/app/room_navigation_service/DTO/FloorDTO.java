@@ -7,11 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class BuildingDTO {
+public class FloorDTO {
     private Integer id;
     private String name;
-    private Integer totalFloor;
-    private Double latitude;
-    private Double longitude;
-    private Integer facultyId;
+    private Integer roomCount;
+    private Integer buildingId;
 }
