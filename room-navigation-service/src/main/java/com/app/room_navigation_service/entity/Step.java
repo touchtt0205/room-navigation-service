@@ -23,6 +23,7 @@ public class Step {
     private String description;
 
     private String type;
+    private Float iconSize;
 
     @Column(name = "image_url", columnDefinition = "text")
     private String imageUrl;
