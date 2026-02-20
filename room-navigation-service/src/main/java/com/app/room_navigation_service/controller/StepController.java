@@ -24,21 +24,23 @@ public class StepController {
     // Create
     @PostMapping
     public ResponseEntity<Step> createStep(
-            @RequestParam String name,
+//            @RequestParam String name,
             @RequestParam String description,
             @RequestParam String type,
             @RequestParam Float overlayX,
             @RequestParam Float overlayY,
+            @RequestParam Float iconSize,
             @RequestParam MultipartFile stepImage,
             @RequestParam MultipartFile iconImage
     ) {
         try {
             Step step = new Step();
-            step.setName(name);
+//            step.setName(name);
             step.setDescription(description);
             step.setType(type);
             step.setOverlayX(overlayX);
             step.setOverlayY(overlayY);
+            step.setIconSize(iconSize);
 
             // อัปโหลดไฟล์ไป MinIO
             String stepUrl = storageService.uploadFile(stepImage, "step");

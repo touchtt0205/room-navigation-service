@@ -19,11 +19,13 @@ public class Route {
 
     private String name;
     private String startFrom;
+    @Column(name = "room_id")
+    private Long roomId;
 
-    @ManyToOne
-    @JoinColumn(name = "room_id")
-    private Room room;
+//    @ManyToOne
+//    @JoinColumn(name = "room_id")
+//    private Room room;
 
-    @OneToMany(mappedBy = "route", cascade = CascadeType.ALL)
-    private List<RouteStep> routeSteps;
+//    @OneToMany(mappedBy = "route", cascade = CascadeType.ALL)
+//    private List<RouteStep> routeSteps;
 }
