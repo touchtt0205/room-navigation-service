@@ -1,0 +1,27 @@
+spring.application.name=
+spring.datasource.url=
+spring.datasource.username=
+spring.datasource.password=
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+
+Swagger
+springdoc.api-docs.path=/v3/api-docs
+springdoc.swagger-ui.path=/swagger-ui.html
+
+???? multipart ??????????????????
+spring.servlet.multipart.enabled=true
+spring.servlet.multipart.max-file-size=10MB
+spring.servlet.multipart.max-request-size=10MB
+
+
+cmu.entraid.get.token.url=
+cmu.entraid.redirect.url=
+cmu.entraid.client.id=
+cmu.entraid.client.secret=
+cmu.entraid.get.basic.info.url=
+scope=
+jwt.secret=
+app.domain=
+spring.profiles.active=
