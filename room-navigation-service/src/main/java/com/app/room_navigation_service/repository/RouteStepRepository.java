@@ -30,6 +30,7 @@ public interface RouteStepRepository extends JpaRepository<RouteStep, Long> {
         s.iconUrl,
         s.overlayX,
         s.overlayY,
+        s.iconSize,
         s.type
     )
     FROM RouteStep rs

@@ -16,7 +16,8 @@ public class RouteStepDetailDTO {
     private String description;
     private String imageUrl;
     private String iconUrl;
-    private Float overlayX;     // ต้องเป็น Float
-    private Float overlayY;     // ต้องเป็น Float
+    private Float overlayX;
+    private Float overlayY;
+    private Float iconSize;
     private String type;
 }
