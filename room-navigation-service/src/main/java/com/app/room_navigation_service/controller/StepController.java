@@ -43,11 +43,15 @@ public class StepController {
             step.setIconSize(iconSize);
 
             // อัปโหลดไฟล์ไป MinIO
-            String stepUrl = storageService.uploadFile(stepImage, "step");
-            String iconUrl = storageService.uploadFile(iconImage, "icon");
+            if (stepImage != null && !stepImage.isEmpty()) {
+                String stepUrl = storageService.uploadAsWebp(stepImage, "steps/images");
+                step.setImageUrl(stepUrl);
+            }
 
-            step.setImageUrl(stepUrl);
-            step.setIconUrl(iconUrl);
+            if (iconImage != null && !iconImage.isEmpty()) {
+                String iconUrl = storageService.uploadAsWebp(iconImage, "steps/icons");
+                step.setIconUrl(iconUrl);
+            }
 
             Step savedStep = stepService.saveStep(step);
             return ResponseEntity.ok(savedStep);
