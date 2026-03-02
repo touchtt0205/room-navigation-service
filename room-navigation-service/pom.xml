@@ -71,11 +71,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.app</groupId>
-			<artifactId>room-navigation-service</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
 			<groupId>io.swagger.core.v3</groupId>
 			<artifactId>swagger-core-jakarta</artifactId>
 			<version>2.2.19</version>
