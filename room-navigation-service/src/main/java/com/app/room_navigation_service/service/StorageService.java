@@ -7,6 +7,7 @@ import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import io.minio.GetPresignedObjectUrlArgs;
 import io.minio.http.Method;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,6 +29,9 @@ public class StorageService {
 
     private final MinioClient minioClient;
     private final String bucketName = "room-images";
+
+    @Value("${minio.public-url}")
+    private String minioPublicUrl;
 
     public StorageService(MinioClient minioClient) {
         this.minioClient = minioClient;
@@ -116,7 +120,7 @@ public class StorageService {
         }
 
 
-        return String.format("http://localhost:9000/%s/%s", bucketName, objectName);
+        return String.format("%s/%s/%s", minioPublicUrl, bucketName, objectName);
     }
 
     private BufferedImage rotateImage(BufferedImage img, int orientation) {
