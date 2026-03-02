@@ -1,0 +1,17 @@
+# ไม่เอาโฟลเดอร์ที่ Build ในเครื่องคอมของเรา
+target/
+
+# ไม่เอาไฟล์ตั้งค่าของ IDE (IntelliJ, VS Code)
+.idea/
+.vscode/
+*.iml
+
+# ไม่เอาไฟล์ Git และ Environment Variables (เพื่อความปลอดภัย)
+.git/
+.gitignore
+.env
+
+# (Optional) ไม่เอา Maven Wrapper เพราะเราใช้ Maven จาก Base Image แล้ว
+.mvn/
+mvnw
+mvnw.cmd
