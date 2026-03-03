@@ -27,7 +27,7 @@ public class RouteService {
     }
 
     // Read by ID
-    public Optional<Route> getRouteById(Long id) {
+    public Optional<Route> getRouteById(Integer id) {
         return routeRepository.findById(id);
     }
 
@@ -37,7 +37,7 @@ public class RouteService {
     }
 
     // Update
-    public Route updateRoute(Long id, Route updated) {
+    public Route updateRoute(Integer id, Route updated) {
         return routeRepository.findById(id).map(existing -> {
             existing.setName(updated.getName());
             existing.setStartFrom(updated.getStartFrom());
@@ -47,7 +47,8 @@ public class RouteService {
     }
 
     // Delete
-    public void deleteRoute(Long id) {
+    public void deleteRoute(Integer id) {
         routeRepository.deleteById(id);
     }
+
 }

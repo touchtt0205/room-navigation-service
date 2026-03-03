@@ -69,6 +69,7 @@ package com.app.room_navigation_service.service;
 import com.app.room_navigation_service.DTO.RoomDTO;
 import com.app.room_navigation_service.DTO.RoomResponseDTO;
 import com.app.room_navigation_service.DTO.RouteStepDetailDTO;
+import com.app.room_navigation_service.DTO.RouteVisualizationDTO;
 import com.app.room_navigation_service.entity.Floor;
 import com.app.room_navigation_service.entity.Room;
 import com.app.room_navigation_service.entity.Route;
@@ -79,6 +80,7 @@ import com.app.room_navigation_service.repository.RouteStepRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -110,6 +112,7 @@ public class RoomService {
     private final FloorRepository floorRepository;
     private final RouteRepository routeRepository;
     private final RouteStepRepository routeStepRepository;
+    private final RouteStepService routeStepService;
 
     public RoomDTO create(RoomDTO dto) {
         Floor floor = floorRepository.findById(dto.getFloorId())
@@ -134,10 +137,19 @@ public class RoomService {
         return mapToDTO(roomRepository.save(room));
     }
 
+    @Transactional
     public void delete(Integer id) {
         if (!roomRepository.existsById(id)) {
             throw new RuntimeException("Room not found");
         }
+        List<Route> routes = routeRepository.findByRoomId(id.longValue());
+
+        for (Route route : routes) {
+            routeStepService.deleteAllByRouteId(route.getId().longValue());
+        }
+
+        routeRepository.deleteByRoomId(id.longValue());
+
         roomRepository.deleteById(id);
     }
 
@@ -145,6 +157,29 @@ public class RoomService {
         return roomRepository.findByFloorIdOrderByIdAsc(floorId)
                 .stream()
                 .map(this::mapToDTO)
+                .toList();
+    }
+
+    public List<RouteVisualizationDTO> getVisualByFloor(Integer floorId) {
+        List<Room> rooms = roomRepository.findByFloorIdOrderByIdAsc(floorId);
+
+        return rooms.stream()
+                .flatMap(room -> {
+                    List<Route> routes = routeRepository.findByRoomId(room.getId().longValue());
+
+                    return routes.stream().map(route -> {
+                        RouteVisualizationDTO dto = new RouteVisualizationDTO();
+                        dto.setRouteId(route.getId().toString());
+                        dto.setRoomId(room.getId().toString());
+                        dto.setRoomName(room.getName());
+
+                        List<RouteStepDetailDTO> stepDetails = routeStepRepository
+                                .findRouteStepDetailsByRouteId(route.getId().longValue());
+
+                        dto.setSteps(stepDetails);
+                        return dto;
+                    });
+                })
                 .toList();
     }
 
