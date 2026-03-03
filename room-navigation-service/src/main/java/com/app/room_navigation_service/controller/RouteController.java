@@ -38,7 +38,7 @@ public class RouteController {
 
     // Read by ID
     @GetMapping("/{routeId}")
-    public ResponseEntity<Route> getRouteById(@PathVariable Long routeId) {
+    public ResponseEntity<Route> getRouteById(@PathVariable Integer routeId) {
         return routeService.getRouteById(routeId)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -74,7 +74,7 @@ public class RouteController {
 
     // Update
     @PutMapping("/{routeId}")
-    public ResponseEntity<Route> updateRoute(@PathVariable Long routeId, @RequestBody Route route) {
+    public ResponseEntity<Route> updateRoute(@PathVariable Integer routeId, @RequestBody Route route) {
         try {
             return ResponseEntity.ok(routeService.updateRoute(routeId, route));
         } catch (RuntimeException e) {
@@ -84,7 +84,7 @@ public class RouteController {
 
     // Delete
     @DeleteMapping("/{routeId}")
-    public ResponseEntity<Void> deleteRoute(@PathVariable Long routeId) {
+    public ResponseEntity<Void> deleteRoute(@PathVariable Integer routeId) {
         routeService.deleteRoute(routeId);
         return ResponseEntity.ok().build();
     }
