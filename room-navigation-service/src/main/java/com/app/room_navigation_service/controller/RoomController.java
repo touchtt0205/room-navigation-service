@@ -3,6 +3,7 @@ package com.app.room_navigation_service.controller;
 
 import com.app.room_navigation_service.DTO.RoomDTO;
 import com.app.room_navigation_service.DTO.RoomResponseDTO;
+import com.app.room_navigation_service.DTO.RouteVisualizationDTO;
 import com.app.room_navigation_service.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -39,6 +40,11 @@ public class RoomController {
     @GetMapping("/floor/{floorId}")
     public List<RoomDTO> getByFloor(@PathVariable Integer floorId) {
         return roomService.getByFloor(floorId);
+    }
+
+    @GetMapping("/floor/{floorId}/visual")
+    public List<RouteVisualizationDTO> getVisualByFloor(@PathVariable Integer floorId) {
+        return roomService.getVisualByFloor(floorId);
     }
 
     @GetMapping("/{id}")
