@@ -61,6 +61,51 @@ public class StepController {
         }
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Step> updateStep(
+            @PathVariable Integer id,
+            @RequestParam(required = false) String description,
+            @RequestParam(required = false) String type,
+            @RequestParam(required = false) Float overlayX,
+            @RequestParam(required = false) Float overlayY,
+            @RequestParam(required = false) Float iconSize,
+            @RequestParam(value = "stepImage", required = false) MultipartFile stepImage,
+            @RequestParam(value = "iconImage", required = false) MultipartFile iconImage
+    ) {
+        try {
+            Step existingStep = stepService.getStepById(id)
+                    .orElseThrow(() -> new RuntimeException("ไม่พบข้อมูล Step ID: " + id));
+            if (existingStep == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            if (description != null) existingStep.setDescription(description);
+            if (type != null) existingStep.setType(type);
+            if (overlayX != null) existingStep.setOverlayX(overlayX);
+            if (overlayY != null) existingStep.setOverlayY(overlayY);
+            if (iconSize != null) existingStep.setIconSize(iconSize);
+
+            if (stepImage != null && !stepImage.isEmpty()) {
+
+                String stepUrl = storageService.uploadAsWebp(stepImage, "steps/images");
+                existingStep.setImageUrl(stepUrl);
+            }
+
+            if (iconImage != null && !iconImage.isEmpty()) {
+
+                String iconUrl = storageService.uploadAsWebp(iconImage, "steps/icons");
+                existingStep.setIconUrl(iconUrl);
+            }
+
+            Step updatedStep = stepService.saveStep(existingStep);
+            return ResponseEntity.ok(updatedStep);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).build();
+        }
+    }
+
 
     // Read All
     @GetMapping
@@ -77,16 +122,16 @@ public class StepController {
     }
 
     // Update
-    @PutMapping("/{id}")
-    public ResponseEntity<Step> updateStep(@PathVariable Integer id, @RequestBody Step step) {
-        return stepService.getStepById(id)
-                .map(existing -> {
-                    step.setId(id);
-                    Step updated = stepService.saveStep(step);
-                    return ResponseEntity.ok(updated);
-                })
-                .orElse(ResponseEntity.notFound().build());
-    }
+//    @PutMapping("/{id}")
+//    public ResponseEntity<Step> updateStep(@PathVariable Integer id, @RequestBody Step step) {
+//        return stepService.getStepById(id)
+//                .map(existing -> {
+//                    step.setId(id);
+//                    Step updated = stepService.saveStep(step);
+//                    return ResponseEntity.ok(updated);
+//                })
+//                .orElse(ResponseEntity.notFound().build());
+//    }
 
     // Delete
     @DeleteMapping("/{id}")
