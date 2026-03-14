@@ -9,10 +9,12 @@ import java.util.List;
 public class RoomResponseDTO {
     private Integer id;
     private String name;
-    private Integer floor;
+    private String floor;
     private String building;
     private String faculty;
     private String room_image_url;
     private String routeId;
     private List<RouteStepDetailDTO> steps;
+    private Double latitude;
+    private Double longitude;
 }

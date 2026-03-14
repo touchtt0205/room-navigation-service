@@ -60,6 +60,11 @@ public class AuthController {
         // 4. Create JWT Token
         String token = generateJwtToken(userInfo);
 
+        String cookieDomain = appDomain
+                .replace("https://", "")
+                .replace("http://", "")
+                .split(":")[0];
+
         // 5. Create Cookie (HttpOnly)
         ResponseCookie cookie = ResponseCookie.from("cmu-entraid-example-token", token)
                 .httpOnly(true)
@@ -67,7 +72,7 @@ public class AuthController {
                 .path("/")
                 .maxAge(3600)
                 .sameSite("Lax")
-                .domain(appDomain)
+                .domain(cookieDomain)
                 .build();
 
         return ResponseEntity.ok()

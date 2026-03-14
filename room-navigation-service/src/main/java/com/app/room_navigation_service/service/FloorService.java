@@ -81,7 +81,7 @@ public class FloorService {
         FloorDTO dto = new FloorDTO();
         dto.setId(floor.getId());
         dto.setName(floor.getName());
-        dto.setRoomCount(floor.getRoomCount());
+        dto.setRoomCount(floorRepository.countTotalRooms(floor.getId()));
         dto.setBuildingId(floor.getBuilding().getId());
         return dto;
     }

@@ -1,5 +1,6 @@
 package com.app.room_navigation_service.controller;
 
+import com.app.room_navigation_service.DTO.StepUsageDTO;
 import com.app.room_navigation_service.entity.Step;
 import com.app.room_navigation_service.service.StepService;
 import com.app.room_navigation_service.service.StorageService;
@@ -16,7 +17,7 @@ public class StepController {
     private final StepService stepService;
     private final StorageService storageService;
 
-    public StepController(StepService stepService ,StorageService storageService) {
+    public StepController(StepService stepService, StorageService storageService) {
         this.stepService = stepService;
         this.storageService = storageService;
     }
@@ -61,6 +62,23 @@ public class StepController {
         }
     }
 
+    @PostMapping("/{id}/add-to-route")
+    public ResponseEntity<Void> linkStepToRoute(
+            @PathVariable Integer id,
+            @RequestParam Long routeId,
+            @RequestParam Integer seqOrder,
+            @RequestParam(defaultValue = "local") String insertScope
+    ) {
+        try {
+            stepService.addToRoute(routeId, id, seqOrder, insertScope);
+
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).build();
+        }
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<Step> updateStep(
             @PathVariable Integer id,
@@ -70,35 +88,17 @@ public class StepController {
             @RequestParam(required = false) Float overlayY,
             @RequestParam(required = false) Float iconSize,
             @RequestParam(value = "stepImage", required = false) MultipartFile stepImage,
-            @RequestParam(value = "iconImage", required = false) MultipartFile iconImage
+            @RequestParam(value = "iconImage", required = false) MultipartFile iconImage,
+            @RequestParam(defaultValue = "global") String updateScope,
+            @RequestParam(required = false) Long routeId
     ) {
         try {
-            Step existingStep = stepService.getStepById(id)
-                    .orElseThrow(() -> new RuntimeException("ไม่พบข้อมูล Step ID: " + id));
-            if (existingStep == null) {
-                return ResponseEntity.notFound().build();
-            }
+            Step result = stepService.processUpdateWithScope(
+                    id, description, type, overlayX, overlayY, iconSize,
+                    stepImage, iconImage, updateScope, routeId
+            );
 
-            if (description != null) existingStep.setDescription(description);
-            if (type != null) existingStep.setType(type);
-            if (overlayX != null) existingStep.setOverlayX(overlayX);
-            if (overlayY != null) existingStep.setOverlayY(overlayY);
-            if (iconSize != null) existingStep.setIconSize(iconSize);
-
-            if (stepImage != null && !stepImage.isEmpty()) {
-
-                String stepUrl = storageService.uploadAsWebp(stepImage, "steps/images");
-                existingStep.setImageUrl(stepUrl);
-            }
-
-            if (iconImage != null && !iconImage.isEmpty()) {
-
-                String iconUrl = storageService.uploadAsWebp(iconImage, "steps/icons");
-                existingStep.setIconUrl(iconUrl);
-            }
-
-            Step updatedStep = stepService.saveStep(existingStep);
-            return ResponseEntity.ok(updatedStep);
+            return ResponseEntity.ok(result);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -121,6 +121,11 @@ public class StepController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/{id}/usage")
+    public ResponseEntity<StepUsageDTO> getStepUsage(@PathVariable Long id) {
+        return ResponseEntity.ok(stepService.getUsage(id));
+    }
+
     // Update
 //    @PutMapping("/{id}")
 //    public ResponseEntity<Step> updateStep(@PathVariable Integer id, @RequestBody Step step) {
@@ -135,12 +140,20 @@ public class StepController {
 
     // Delete
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteStep(@PathVariable Integer id) {
-        if (stepService.getStepById(id).isPresent()) {
-            stepService.deleteStep(id);
+    public ResponseEntity<Void> deleteStep(
+            @PathVariable Integer id,
+            @RequestParam(defaultValue = "local") String scope,
+            @RequestParam(required = false) Long routeId
+    ) {
+        try {
+            stepService.processDeleteWithScope(id, scope, routeId);
+
             return ResponseEntity.ok().build();
-        } else {
+        } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).build();
         }
     }
 
@@ -156,5 +169,10 @@ public class StepController {
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
+    }
+
+    @GetMapping("/descriptions/unique")
+    public ResponseEntity<List<String>> getUniqueDescriptions() {
+        return ResponseEntity.ok(stepService.getUniqueDescriptions());
     }
 }

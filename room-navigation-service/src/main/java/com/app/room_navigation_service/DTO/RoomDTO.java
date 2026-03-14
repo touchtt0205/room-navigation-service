@@ -28,4 +28,5 @@ public class RoomDTO {
     private String name;
     private Integer floorId;
     private Boolean hasSharedRoute;
+    private Integer stepCount;
 }

@@ -33,6 +33,7 @@ public class BuildingService {
                     dto.setTotalFloor(building.getTotalFloor());
                     dto.setLongitude(building.getLongitude());
                     dto.setLatitude(building.getLatitude());
+                    dto.setTotalFloor(buildingRepository.countTotalFloors(building.getId()));
                     return dto;
                 })
                 .collect(Collectors.toList());
